@@ -36,12 +36,12 @@ typedef BOOL(^iXpandControllerDataBlock)(NSData * _Nonnull data);
 
 - (EAAccessory *)connectediXpandAccessory;
 
-- (NSOperation * _Nullable)openSessionWithCompletion:(iXpandControllerErrorBlock)completion;
+- (NSOperation *)openSessionWithTimeout:(NSTimeInterval)timeout completion:(nullable iXpandControllerErrorBlock)completion;
 
-- (NSOperation * _Nullable)closeSessionWithCompletion:(iXpandControllerErrorBlock)completion;
+- (NSOperation * _Nullable)closeSessionWithCompletion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)attributesOfItemAtPath:(NSString *)drivePath
-                                       completion:(iXpandControllerItemAttributesBlock)completion;
+                                       completion:(nullable iXpandControllerItemAttributesBlock)completion;
 
 - (NSOperation *)moveItemAtPath:(NSString *)srcDrivePath
                          toPath:(NSString *)dstDrivePath
@@ -49,32 +49,31 @@ typedef BOOL(^iXpandControllerDataBlock)(NSData * _Nonnull data);
 
 - (NSOperation * _Nullable)writeFileToDriveAtPath:(NSString *)drivePath
                                     fromLocalPath:(NSString *)localSystemPath
-                                         progress:(iXpandControllerProgressBlock)progress
-                                       completion:(iXpandControllerErrorBlock)completion;
+                                         progress:(nullable iXpandControllerProgressBlock)progress
+                                       completion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)readFileFromDriveAtPath:(NSString *)drivePath
                                        toLocalPath:(NSString *)localSystemPath
-                                          progress:(iXpandControllerProgressBlock)progress
-                                        completion:(iXpandControllerErrorBlock)completion;
+                                          progress:(nullable iXpandControllerProgressBlock)progress
+                                        completion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation *)readFileFromDriveAtPath:(NSString *)drivePath
                                   offset:(uint64_t)offset
-                                progress:(iXpandControllerDataBlock)progress
-                              completion:(iXpandControllerErrorBlock)completion;
+                                progress:(nullable iXpandControllerDataBlock)progress
+                              completion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)createDirectoryAtPath:(NSString *)drivePath
-                                      completion:(iXpandControllerErrorBlock)completion;
+                                      completion:(nullable iXpandControllerErrorBlock)completion;
 
-- (NSOperation * _Nullable)deviceAttributesWithCompletion:(iXpandControllerDeviceAttributesBlock)completion;
+- (NSOperation * _Nullable)deviceAttributesWithCompletion:(nullable iXpandControllerDeviceAttributesBlock)completion;
 
 - (NSOperation * _Nullable)contentsOfDirectoryAtPath:(NSString *)drivePath
                                   includeHiddenFiles:(BOOL)includeHidden
                                   includeSystemFiles:(BOOL)includeSystem
-                                          completion:(iXpandControllerContentsOfDirectoryBlock)completion;
+                                          completion:(nullable iXpandControllerContentsOfDirectoryBlock)completion;
 
 - (NSOperation * _Nullable)deleteItemAtPath:(NSString *)drivePath
-                                 completion:(iXpandControllerErrorBlock)completion;
-
+                                 completion:(nullable iXpandControllerErrorBlock)completion;
 
 @end
 

@@ -73,8 +73,10 @@ return (value); \
 - (instancetype)init{
     self = [super init];
     if(self){
+        
         self.operationQueue = [[NSOperationQueue alloc] init];
         self.operationQueue.maxConcurrentOperationCount = 1;
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(accessoryDidConnect:)
                                                      name:EAAccessoryDidConnectNotification
@@ -83,12 +85,24 @@ return (value); \
                                                  selector:@selector(accessoryDidDisconnect:)
                                                      name:EAAccessoryDidDisconnectNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillTerminate:)
+                                                     name:UIApplicationWillTerminateNotification
+                                                   object:nil];
+        
     }
     return self;
 }
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Application Notifications
+
+- (void)applicationWillTerminate:(NSNotification *)notification{
+    [self _closeSessionInternal];
 }
 
 #pragma mark - Accessory Connect/Disconnect Notifications
@@ -120,7 +134,7 @@ return (value); \
 #pragma mark - IsConnected
 
 - (BOOL)isAccesoryConnectedAndSessionOpened{
-    if(self.sessionOpened && self.isAccessoryConnected){
+    if(self.isAccessoryConnected && self.sessionOpened){
         return YES;
     }
     return NO;
@@ -142,50 +156,64 @@ return (value); \
 
 #pragma mark - Open Session
 
-- (NSOperation *)openSessionWithCompletion:(iXpandControllerErrorBlock)completion{
+- (NSOperation *)openSessionWithTimeout:(NSTimeInterval)timeout completion:(iXpandControllerErrorBlock)completion{
     iXpandWeakifySelf;
     return [self dispatchBlock:^{
         iXpandStrongifySelfAndReturnIfNil;
-        if([[[EAAccessoryManager sharedAccessoryManager] connectedAccessories] count] == 0){
+        if([strongSelf isAccesoryConnectedAndSessionOpened]){
             if(completion){
-                completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeAccessoryNotConnected]);
-            }
-            return;
-        }
-        EAAccessory *accessory = [strongSelf connectediXpandAccessory];
-        if(accessory==nil){
-            if(completion){
-                completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeSanDiskAccessoryNotFound]);
+                completion(nil);
             }
         }
         else{
-            [strongSelf _probeConnectedAccessory:accessory completion:completion];
+            if([[[EAAccessoryManager sharedAccessoryManager] connectedAccessories] count] == 0){
+                if(completion){
+                    completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeAccessoryNotConnected]);
+                }
+                return;
+            }
+            EAAccessory *accessory = [strongSelf connectediXpandAccessory];
+            if(accessory==nil){
+                if(completion){
+                    completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeSanDiskAccessoryNotFound]);
+                }
+            }
+            else{
+                [strongSelf _probeConnectedAccessory:accessory timeout:timeout completion:completion];
+            }
         }
     } priority:NSOperationQueuePriorityHigh];
 }
 
-- (void)_probeConnectedAccessory:(EAAccessory *)accessory completion:(iXpandControllerErrorBlock)completion{
+- (void)_probeConnectedAccessory:(EAAccessory *)accessory timeout:(NSTimeInterval)timeout completion:(iXpandControllerErrorBlock)completion{
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    __block AccessoryCallbacks accStatus;
+    __block AccessoryCallbacks accStatus = ACCESSORY_BUSY;
     [[iXpandSystemController sharedController] checkAccessoryUseFlag:^(AccessoryCallbacks accessoryStatus) {
         accStatus = accessoryStatus;
         dispatch_semaphore_signal(semaphore);
     }];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    if(timeout>0){
+        dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_MSEC));
+    }
+    else{
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
     if (accStatus != ACCESSORY_FREE) {
+        [self _closeSessionInternal];
         if(completion){
             completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeAccessoryInUse]);
         }
         return;
     }
-    if (![[iXpandSystemController sharedController] initDrive:accessory]) {
+    if ([[iXpandSystemController sharedController] initDrive:accessory]==NO) {
+        [self _closeSessionInternal];
         if(completion){
             completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeDriveInitialisationFailed]);
         }
         return;
     }
-    BOOL success = [[iXpandSystemController sharedController] openSession];
-    if (!success){
+    if ([[iXpandSystemController sharedController] openSession]==NO){
+        [self _closeSessionInternal];
         if(completion){
             completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeOpenSessionFailed]);
         }
@@ -199,14 +227,21 @@ return (value); \
 
 #pragma mark - Close Session
 
+- (void)_closeSessionInternal{
+    if([self isAccesoryConnectedAndSessionOpened]){
+        [[iXpandSystemController sharedController] closeSession];
+        [[iXpandSystemController sharedController] unregisterAccessoryCheck];
+        self.sessionOpened = NO;
+    }
+}
+
 - (NSOperation *)closeSessionWithCompletion:(iXpandControllerErrorBlock)completion{
     if([self isAccesoryConnectedAndSessionOpened]){
         iXpandWeakifySelf;
+        [self.operationQueue cancelAllOperations];
         return [self dispatchBlock:^{
             iXpandStrongifySelfAndReturnIfNil;
-            [[iXpandSystemController sharedController] closeSession];
-            [[iXpandSystemController sharedController] unregisterAccessoryCheck];
-            strongSelf.sessionOpened = NO;
+            [strongSelf _closeSessionInternal];
             if(completion){
                 completion(nil);
             }

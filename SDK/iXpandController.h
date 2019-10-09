@@ -34,18 +34,18 @@ typedef BOOL(^iXpandControllerDataBlock)(NSData * _Nonnull data);
 
 - (BOOL)isAccessoryConnected;
 
-- (EAAccessory *)connectediXpandAccessory;
+- (EAAccessory * _Nullable)connectediXpandAccessory;
 
-- (NSOperation *)openSessionWithTimeout:(NSTimeInterval)timeout completion:(nullable iXpandControllerErrorBlock)completion;
+- (NSOperation * _Nullable)openSessionWithTimeout:(NSTimeInterval)timeout completion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)closeSessionWithCompletion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)attributesOfItemAtPath:(NSString *)drivePath
                                        completion:(nullable iXpandControllerItemAttributesBlock)completion;
 
-- (NSOperation *)moveItemAtPath:(NSString *)srcDrivePath
-                         toPath:(NSString *)dstDrivePath
-                     completion:(iXpandControllerErrorBlock)completion;
+- (NSOperation * _Nullable)moveItemAtPath:(NSString *)srcDrivePath
+                                   toPath:(NSString *)dstDrivePath
+                               completion:(iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)writeFileToDriveAtPath:(NSString *)drivePath
                                     fromLocalPath:(NSString *)localSystemPath
@@ -57,10 +57,10 @@ typedef BOOL(^iXpandControllerDataBlock)(NSData * _Nonnull data);
                                           progress:(nullable iXpandControllerProgressBlock)progress
                                         completion:(nullable iXpandControllerErrorBlock)completion;
 
-- (NSOperation *)readFileFromDriveAtPath:(NSString *)drivePath
-                                  offset:(uint64_t)offset
-                                progress:(nullable iXpandControllerDataBlock)progress
-                              completion:(nullable iXpandControllerErrorBlock)completion;
+- (NSOperation * _Nullable)readFileFromDriveAtPath:(NSString *)drivePath
+                                            offset:(uint64_t)offset
+                                          progress:(nullable iXpandControllerDataBlock)progress
+                                        completion:(nullable iXpandControllerErrorBlock)completion;
 
 - (NSOperation * _Nullable)createDirectoryAtPath:(NSString *)drivePath
                                       completion:(nullable iXpandControllerErrorBlock)completion;

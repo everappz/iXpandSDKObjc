@@ -102,7 +102,9 @@ return (value); \
 #pragma mark - Application Notifications
 
 - (void)applicationWillTerminate:(NSNotification *)notification{
-    [self _closeSessionInternal];
+    //There are situation in which application that occupying accessory can get killed.
+    //To ensure proper clean-up, ‘unregisterAccessoryCheck’ API can be called in appDelegate’s API ‘applicationWillTerminate’.
+    [[iXpandSystemController sharedController] unregisterAccessoryCheck];
 }
 
 #pragma mark - Accessory Connect/Disconnect Notifications
@@ -127,6 +129,7 @@ return (value); \
     EAAccessory *accessory = notification.userInfo[EAAccessoryKey];
     if([self isiXpandAccessoryProtocol:accessory]){
         self.sessionOpened = NO;
+        [self.operationQueue cancelAllOperations];
         [[NSNotificationCenter defaultCenter] postNotificationName:iXpandControllerFlashDriveDisconnectedNotification object:self];
     }
 }
@@ -186,34 +189,35 @@ return (value); \
 }
 
 - (void)_probeConnectedAccessory:(EAAccessory *)accessory timeout:(NSTimeInterval)timeout completion:(iXpandControllerErrorBlock)completion{
+    
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    __block AccessoryCallbacks accStatus = ACCESSORY_BUSY;
+    __block AccessoryCallbacks accStatus = ACCESSORY_FREE;
     [[iXpandSystemController sharedController] checkAccessoryUseFlag:^(AccessoryCallbacks accessoryStatus) {
         accStatus = accessoryStatus;
         dispatch_semaphore_signal(semaphore);
     }];
     if(timeout>0){
-        dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_MSEC));
+        dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC));
     }
     else{
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     }
     if (accStatus != ACCESSORY_FREE) {
-        [self _closeSessionInternal];
+        [[iXpandSystemController sharedController] unregisterAccessoryCheck];
         if(completion){
             completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeAccessoryInUse]);
         }
         return;
     }
     if ([[iXpandSystemController sharedController] initDrive:accessory]==NO) {
-        [self _closeSessionInternal];
+        [[iXpandSystemController sharedController] unregisterAccessoryCheck];
         if(completion){
             completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeDriveInitialisationFailed]);
         }
         return;
     }
     if ([[iXpandSystemController sharedController] openSession]==NO){
-        [self _closeSessionInternal];
+        [[iXpandSystemController sharedController] unregisterAccessoryCheck];
         if(completion){
             completion([NSError iXpandErrorWithCode:iXpandControllerErrorCodeOpenSessionFailed]);
         }
@@ -228,8 +232,10 @@ return (value); \
 #pragma mark - Close Session
 
 - (void)_closeSessionInternal{
-    if([self isAccesoryConnectedAndSessionOpened]){
+    if(self.sessionOpened){
         [[iXpandSystemController sharedController] closeSession];
+        //Unregisters accessory check callback registered in ‘checkAccessoryUseFlag’ API.
+        //This function has to be called after ‘closeSession’ API in normal accessory release operation.
         [[iXpandSystemController sharedController] unregisterAccessoryCheck];
         self.sessionOpened = NO;
     }

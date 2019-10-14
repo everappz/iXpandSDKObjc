@@ -55,6 +55,7 @@ return (value); \
 
 @property (strong, nonatomic) NSOperationQueue *operationQueue;
 @property (assign, atomic) BOOL sessionOpened;
+@property (assign, atomic) BOOL closeSessionOnConnect;
 
 @end
 
@@ -74,8 +75,7 @@ return (value); \
     self = [super init];
     if(self){
         
-        self.operationQueue = [[NSOperationQueue alloc] init];
-        self.operationQueue.maxConcurrentOperationCount = 1;
+        [self createOperationQueue];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(accessoryDidConnect:)
@@ -95,6 +95,12 @@ return (value); \
     return self;
 }
 
+- (void)createOperationQueue{
+    [self.operationQueue cancelAllOperations];
+    self.operationQueue = [NSOperationQueue new];
+    self.operationQueue.maxConcurrentOperationCount = 1;
+}
+
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -104,7 +110,10 @@ return (value); \
 - (void)applicationWillTerminate:(NSNotification *)notification{
     //There are situation in which application that occupying accessory can get killed.
     //To ensure proper clean-up, ‘unregisterAccessoryCheck’ API can be called in appDelegate’s API ‘applicationWillTerminate’.
-    [[iXpandSystemController sharedController] unregisterAccessoryCheck];
+    if(self.sessionOpened){
+        [[iXpandSystemController sharedController] closeSession];
+        [[iXpandSystemController sharedController] unregisterAccessoryCheck];
+    }
 }
 
 #pragma mark - Accessory Connect/Disconnect Notifications
@@ -121,6 +130,11 @@ return (value); \
 - (void)accessoryDidConnect:(NSNotification *)notification{
     EAAccessory *accessory = notification.userInfo[EAAccessoryKey];
     if([self isiXpandAccessoryProtocol:accessory]){
+        if(self.closeSessionOnConnect){
+            [[iXpandSystemController sharedController] closeSession];
+            [[iXpandSystemController sharedController] unregisterAccessoryCheck];
+            self.closeSessionOnConnect = NO;
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:iXpandControllerFlashDriveConnectedNotification object:self];
     }
 }
@@ -128,8 +142,11 @@ return (value); \
 - (void)accessoryDidDisconnect:(NSNotification *)notification{
     EAAccessory *accessory = notification.userInfo[EAAccessoryKey];
     if([self isiXpandAccessoryProtocol:accessory]){
+        if(self.sessionOpened){
+            self.closeSessionOnConnect = YES;
+        }
         self.sessionOpened = NO;
-        [self.operationQueue cancelAllOperations];
+        [self createOperationQueue];
         [[NSNotificationCenter defaultCenter] postNotificationName:iXpandControllerFlashDriveDisconnectedNotification object:self];
     }
 }
@@ -189,7 +206,6 @@ return (value); \
 }
 
 - (void)_probeConnectedAccessory:(EAAccessory *)accessory timeout:(NSTimeInterval)timeout completion:(iXpandControllerErrorBlock)completion{
-    
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     __block AccessoryCallbacks accStatus = ACCESSORY_FREE;
     [[iXpandSystemController sharedController] checkAccessoryUseFlag:^(AccessoryCallbacks accessoryStatus) {

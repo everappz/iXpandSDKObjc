@@ -4,6 +4,12 @@
  
  It uses official framework which you can download here: https://developer.westerndigital.com/develop/sandisk/get-the-sdk.html
 
+# Apps using this in real life
+
+[**Evermusic**](https://itunes.apple.com/us/app/evermusic/id885367198?ls=1&mt=8)
+
+[**Evermusic Pro**](https://itunes.apple.com/us/app/evermusic-pro/id905746421?ls=1&mt=8)
+
 # Contacts
  
  For additional information please contact: 

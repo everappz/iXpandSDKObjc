@@ -10,6 +10,8 @@
 
 [**Evermusic Pro**](https://itunes.apple.com/us/app/evermusic-pro/id905746421?ls=1&mt=8)
 
+[**Flacbox**](https://apps.apple.com/us/app/flacbox-flac-player-equalizer/id1097564256)
+
 # Contacts
  
  For additional information please contact: 

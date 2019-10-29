@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
     ' -lz -lstdc++ -lc'
   
   s.xcconfig     = { 
-    'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/iXpandSDKObjc/Frameworks"',
+    'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/iXpandSDKObjc"',
 
     'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags,
     'OTHER_LDFLAGS[arch=armv7]'  => other_ldflags,

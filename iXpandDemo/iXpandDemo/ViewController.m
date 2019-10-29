@@ -8,6 +8,9 @@
 
 #import "ViewController.h"
 #import "iXpandController.h"
+#import "IFDFlashDriveDeviceAttributes.h"
+#import "IFDFlashDriveItemAttributes.h"
+#import "NSError+iXpandController.h"
 
 @interface ViewController ()
 
@@ -18,8 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [[iXpandController sharedController] isAccesoryConnectedAndSessionOpened];
+    NSLog(@"iXpandController => isAccesoryConnectedAndSessionOpened: %@", @([[iXpandController sharedController] isAccesoryConnectedAndSessionOpened]));
 }
-
 
 @end

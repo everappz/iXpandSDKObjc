@@ -18,14 +18,16 @@ Pod::Spec.new do |s|
   # s.xcconfig = {'OTHER_LDFLAGS[sdk=iphonesimulator*]' => '$(inherited) -framework "iXpandSDKlibSim"', 'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -framework "iXpandSDKlib"' }
   # s.pod_target_xcconfig = { 'VALID_ARCHS[sdk=iphonesimulator*]' => '' }
 
-  other_frameworks_os =  ['iXpandSDKlib']
-  other_frameworks_sim =  ['iXpandSDKlibSim']
+  #inspired by https://blog.carbonfive.com/2014/01/24/cocoapods-for-device-only-ios-libraries/
+
+  other_frameworks_os =  'iXpandSDKlib'
+  other_frameworks_sim =  'iXpandSDKlibSim'
   other_frameworks_common =  ['MobileCoreServices', 'ExternalAccessory', 'CoreFoundation', 'Foundation', 'SystemConfiguration', 'CFNetwork', 'Security']
 
-  other_ldflags_os = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + other_frameworks_os.join(' -framework ') +
+  other_ldflags_os = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + ' -framework ' + other_frameworks_os + 
     ' -lz -lstdc++ -lc'
 
-  other_ldflags_sim = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + other_frameworks_sim.join(' -framework ') +
+  other_ldflags_sim = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + ' -framework ' + other_frameworks_sim +
     ' -lz -lstdc++ -lc'
   
   s.xcconfig     = { 

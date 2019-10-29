@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.source_files = 'SDK/*.{h,m}'
   s.requires_arc = true
   # s.vendored_framework = 'Frameworks/iXpandSDKlib.framework', 'Frameworks/iXpandSDKlibSim.framework'
-  # s.vendored_framework = 'Frameworks/iXpandSDKlib.framework'
+  s.vendored_framework = 'Frameworks/iXpandSDKlib.framework'
   # s.libraries        = 'c++', 'z', 'c'
   # s.compiler_flags = '-lc', '-lc++', '-lz'
   # s.ios.framework  = 'MobileCoreServices', 'ExternalAccessory', 'CoreFoundation', 'Foundation', 'SystemConfiguration', 'CFNetwork', 'Security'

@@ -18,23 +18,27 @@ Pod::Spec.new do |s|
   # s.xcconfig = {'OTHER_LDFLAGS[sdk=iphonesimulator*]' => '$(inherited) -framework "iXpandSDKlibSim"', 'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -framework "iXpandSDKlib"' }
   # s.pod_target_xcconfig = { 'VALID_ARCHS[sdk=iphonesimulator*]' => '' }
 
+  other_frameworks_os =  ['iXpandSDKlib']
+  other_frameworks_sim =  ['iXpandSDKlibSim']
+  other_frameworks_common =  ['MobileCoreServices', 'ExternalAccessory', 'CoreFoundation', 'Foundation', 'SystemConfiguration', 'CFNetwork', 'Security']
 
+  other_ldflags_os = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + other_frameworks_os.join(' -framework ') +
+    ' -lz -lstdc++ -lc'
 
-
-
-  other_frameworks =  ['iXpandSDKlib', 'MobileCoreServices', 'ExternalAccessory', 'CoreFoundation', 
-    'Foundation', 'SystemConfiguration', 'CFNetwork', 'Security']
-
-  other_ldflags = '$(inherited) -framework ' + other_frameworks.join(' -framework ') + 
+  other_ldflags_sim = '$(inherited) -framework ' + other_frameworks.join(' -framework ') + other_frameworks_sim.join(' -framework ') +
     ' -lz -lstdc++ -lc'
   
   s.xcconfig     = { 
     'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/iXpandSDKObjc/Frameworks"',
 
-    'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags,
-    'OTHER_LDFLAGS[arch=arm64e]'  => other_ldflags,
-    'OTHER_LDFLAGS[arch=armv7]'  => other_ldflags,
-    'OTHER_LDFLAGS[arch=armv7s]' => other_ldflags
+    'OTHER_LDFLAGS[arch=i386]'  => other_ldflags_sim,
+    'OTHER_LDFLAGS[arch=x86_64]'  => other_ldflags_sim,
+
+    'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags_os,
+    'OTHER_LDFLAGS[arch=arm64e]'  => other_ldflags_os,
+    'OTHER_LDFLAGS[arch=armv7]'  => other_ldflags_os,
+    'OTHER_LDFLAGS[arch=armv7s]' => other_ldflags_os
+    
   }
 
 

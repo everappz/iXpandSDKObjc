@@ -1,22 +1,21 @@
 PODS:
-  - iXpandSDKObjc (1.0.2)
+  - iXpandSDKObjc (1.0.3)
 
 DEPENDENCIES:
-  - iXpandSDKObjc (from `https://github.com/leshkoapps/iXpandSDKObjc.git`, commit `8e7ecb8e6b1739bc20b77d025478722b80564d5b`)
+  - iXpandSDKObjc (from `https://github.com/leshkoapps/iXpandSDKObjc.git`)
 
 EXTERNAL SOURCES:
   iXpandSDKObjc:
-    :commit: 8e7ecb8e6b1739bc20b77d025478722b80564d5b
     :git: https://github.com/leshkoapps/iXpandSDKObjc.git
 
 CHECKOUT OPTIONS:
   iXpandSDKObjc:
-    :commit: 8e7ecb8e6b1739bc20b77d025478722b80564d5b
+    :commit: 997813eaeeadfcf4fdd48a5fca74f1000fedc5cd
     :git: https://github.com/leshkoapps/iXpandSDKObjc.git
 
 SPEC CHECKSUMS:
-  iXpandSDKObjc: 94506ab94e7f411799a48d90a029d92cc5b23cbb
+  iXpandSDKObjc: 8f1445397722c32a5e2be31557a15e8b963dc2fb
 
-PODFILE CHECKSUM: 5e4c08f5cfd3becf5f3096a8344e7e69708b589d
+PODFILE CHECKSUM: fa12321d835b19d837d8166621bb471446cd011e
 
 COCOAPODS: 1.5.3

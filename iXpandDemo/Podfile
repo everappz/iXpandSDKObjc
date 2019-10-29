@@ -6,6 +6,6 @@ target 'iXpandDemo' do
   # use_frameworks!
 
   # Pods for iXpandDemo
-  pod 'iXpandSDKObjc', :git => 'https://github.com/leshkoapps/iXpandSDKObjc.git', :commit => '8e7ecb8e6b1739bc20b77d025478722b80564d5b'
+  pod 'iXpandSDKObjc', :git => 'https://github.com/leshkoapps/iXpandSDKObjc.git'
 
 end

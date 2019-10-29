@@ -6,7 +6,6 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#ifdef APP_IXPAND_SUPPORT
 
 #import "iXpandController.h"
 #import "IFDFlashDriveItemAttributes.h"
@@ -1129,5 +1128,3 @@ return (value); \
 }
 
 @end
-
-#endif

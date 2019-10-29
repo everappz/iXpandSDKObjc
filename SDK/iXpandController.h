@@ -6,8 +6,6 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#ifdef APP_IXPAND_SUPPORT
-
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -78,5 +76,3 @@ typedef BOOL(^iXpandControllerDataBlock)(NSData * _Nonnull data);
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif

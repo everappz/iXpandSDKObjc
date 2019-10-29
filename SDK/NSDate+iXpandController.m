@@ -6,8 +6,6 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#ifdef APP_IXPAND_SUPPORT
-
 #import "NSDate+iXpandController.h"
 
 #define SecondsFrom2000To2001 31622400
@@ -105,5 +103,3 @@
 }
 
 @end
-
-#endif

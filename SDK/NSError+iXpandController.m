@@ -6,8 +6,6 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#ifdef APP_IXPAND_SUPPORT
-
 #import "NSError+iXpandController.h"
 
 NSString * const iXpandControllerErrorDomain = @"iXpandControllerErrorDomain";
@@ -19,5 +17,3 @@ NSString * const iXpandControllerErrorDomain = @"iXpandControllerErrorDomain";
 }
 
 @end
-
-#endif

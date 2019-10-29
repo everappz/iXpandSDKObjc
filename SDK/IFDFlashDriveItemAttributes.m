@@ -6,8 +6,6 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#ifdef APP_IXPAND_SUPPORT
-
 #import "IFDFlashDriveItemAttributes.h"
 #import "NSDate+iXpandController.h"
 
@@ -65,11 +63,5 @@
 }
 
 @end
-
-
-#endif
-
-
-
 
 

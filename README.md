@@ -2,7 +2,7 @@
 
  iXpand Objc SDK for SANDISK IXPAND: https://developer.westerndigital.com/develop/sandisk/ixpand-sdk-home-main.html.
  
- It uses official framework which you can download here: https://developer.westerndigital.com/develop/sandisk/get-the-sdk.html
+ It uses official framework which available here: https://developer.westerndigital.com/develop/sandisk/get-the-sdk.html
 
 # Apps using this in real life
 
@@ -20,7 +20,7 @@
  support@everappz.com
  
  
- http://everappz.com/index.php/support/
+ http://everappz.com/support/
  
 # License
 

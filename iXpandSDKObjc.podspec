@@ -10,7 +10,8 @@ Pod::Spec.new do |s|
   s.source_files = 'SDK/*.{h,m}'
   s.requires_arc = true
   # s.vendored_framework = 'Frameworks/iXpandSDKlib.framework', 'Frameworks/iXpandSDKlibSim.framework'
-  s.vendored_framework = 'Frameworks/iXpandSDKlib.framework'
+  # s.vendored_framework = 'Frameworks/iXpandSDKlib.framework'
+  s.preserve_paths = 'Frameworks/*.framework'
   # s.libraries        = 'c++', 'z', 'c'
   # s.compiler_flags = '-lc', '-lc++', '-lz'
   # s.ios.framework  = 'MobileCoreServices', 'ExternalAccessory', 'CoreFoundation', 'Foundation', 'SystemConfiguration', 'CFNetwork', 'Security'
@@ -31,6 +32,7 @@ Pod::Spec.new do |s|
     'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/iXpandSDKObjc"',
 
     'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags,
+    'OTHER_LDFLAGS[arch=arm64e]'  => other_ldflags,
     'OTHER_LDFLAGS[arch=armv7]'  => other_ldflags,
     'OTHER_LDFLAGS[arch=armv7s]' => other_ldflags
   }

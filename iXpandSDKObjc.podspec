@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   other_ldflags_os = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + other_frameworks_os.join(' -framework ') +
     ' -lz -lstdc++ -lc'
 
-  other_ldflags_sim = '$(inherited) -framework ' + other_frameworks.join(' -framework ') + other_frameworks_sim.join(' -framework ') +
+  other_ldflags_sim = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + other_frameworks_sim.join(' -framework ') +
     ' -lz -lstdc++ -lc'
   
   s.xcconfig     = { 
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
     'OTHER_LDFLAGS[arch=arm64e]'  => other_ldflags_os,
     'OTHER_LDFLAGS[arch=armv7]'  => other_ldflags_os,
     'OTHER_LDFLAGS[arch=armv7s]' => other_ldflags_os
-    
+
   }
 
 

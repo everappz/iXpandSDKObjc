@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "iXpandSDKObjc"
-  s.version      = "1.0.3"
+  s.version      = "1.0.4"
   s.summary      = "iXpand Objc SDK for SANDISK IXPAND: https://developer.westerndigital.com/develop/sandisk/ixpand-sdk-home-main.html"
   s.homepage     = "https://github.com/leshkoapps/iXpandSDKObjc"
   s.license      = 'MIT'

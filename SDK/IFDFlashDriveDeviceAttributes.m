@@ -6,12 +6,8 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#if !(TARGET_OS_SIMULATOR) && !(TARGET_OS_MACCATALYST)
-
 #import "IFDFlashDriveDeviceAttributes.h"
 
 @implementation IFDFlashDriveDeviceAttributes
 
 @end
-
-#endif

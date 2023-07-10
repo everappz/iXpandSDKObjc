@@ -6,8 +6,6 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
-#if !(TARGET_OS_SIMULATOR) && !(TARGET_OS_MACCATALYST)
-
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -61,5 +59,3 @@ extern  NSString * const iXpandControllerErrorDomain;
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif

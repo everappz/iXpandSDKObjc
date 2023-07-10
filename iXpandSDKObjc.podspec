@@ -19,10 +19,7 @@ Pod::Spec.new do |s|
     ' -lz -lstdc++ -lc'
   s.xcconfig     = { 
     'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/iXpandSDKObjc/Frameworks"',
-    'OTHER_LDFLAGS[arch=i386]'  => other_ldflags_sim,
-    'OTHER_LDFLAGS[arch=x86_64]'  => other_ldflags_sim,
-    'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags_os,
-    'OTHER_LDFLAGS[arch=armv7]'  => other_ldflags_os,
-    'OTHER_LDFLAGS[arch=armv7s]' => other_ldflags_os
+    'OTHER_LDFLAGS[sdk=iphonesimulator*]'  => other_ldflags_sim,
+    'OTHER_LDFLAGS[sdk=iphoneos*]'  => other_ldflags_os
   }
 end

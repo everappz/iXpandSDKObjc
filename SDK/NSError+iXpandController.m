@@ -6,6 +6,9 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
+
+#if !(TARGET_OS_SIMULATOR) && !(TARGET_OS_MACCATALYST)
+
 #import "NSError+iXpandController.h"
 
 NSString * const iXpandControllerErrorDomain = @"iXpandControllerErrorDomain";
@@ -17,3 +20,5 @@ NSString * const iXpandControllerErrorDomain = @"iXpandControllerErrorDomain";
 }
 
 @end
+
+#endif

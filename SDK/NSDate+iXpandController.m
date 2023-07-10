@@ -6,6 +6,8 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
+#if !(TARGET_OS_SIMULATOR) && !(TARGET_OS_MACCATALYST)
+
 #import "NSDate+iXpandController.h"
 
 #define SecondsFrom2000To2001 31622400
@@ -103,3 +105,5 @@
 }
 
 @end
+
+#endif

@@ -6,6 +6,7 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
+#if !(TARGET_OS_SIMULATOR) && !(TARGET_OS_MACCATALYST)
 
 #import "iXpandController.h"
 #import "IFDFlashDriveItemAttributes.h"
@@ -1128,3 +1129,5 @@ return (value); \
 }
 
 @end
+
+#endif

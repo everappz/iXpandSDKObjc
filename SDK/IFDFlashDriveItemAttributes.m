@@ -6,6 +6,8 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
+#if !TARGET_OS_SIMULATOR && !defined(IXPAND_DISABLED_SIM)
+
 #import "IFDFlashDriveItemAttributes.h"
 #import "NSDate+iXpandController.h"
 
@@ -63,5 +65,7 @@
 }
 
 @end
+
+#endif
 
 

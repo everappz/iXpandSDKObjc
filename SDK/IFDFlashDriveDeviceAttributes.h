@@ -6,6 +6,8 @@
 //  Copyright © 2019 Everappz. All rights reserved.
 //
 
+#if !TARGET_OS_SIMULATOR && !defined(IXPAND_DISABLED_SIM)
+
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,3 +25,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.0'
   s.requires_arc = true
   s.source_files = 'SDK/**/*.{h,m}'
-  s.vendored_frameworks = 'Frameworks/iXpandSDKlib.framework'
+  s.preserve_paths = 'Frameworks/iXpandSDKlib.framework'
   other_frameworks = %w[MobileCoreServices ExternalAccessory CoreFoundation Foundation SystemConfiguration CFNetwork Security]
 
   # Per-SDK flags: link iXpand only on device; keep simulator clean.

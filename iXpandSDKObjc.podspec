@@ -1,31 +1,23 @@
 Pod::Spec.new do |s|
   s.name         = "iXpandSDKObjc"
-  s.version      = "1.0.8"
-  s.summary      = "iXpand Objc SDK for SANDISK IXPAND"
+  s.version      = "1.0.9"
+  s.summary      = "iXpand Objc SDK for SANDISK IXPAND: https://developer.westerndigital.com/develop/sandisk/ixpand-sdk-home-main.html"
   s.homepage     = "https://github.com/leshkoapps/iXpandSDKObjc"
   s.license      = 'MIT'
   s.author       = { "Artem Meleshko" => "support@everappz.com" }
   s.source       = { :git => "https://github.com/leshkoapps/iXpandSDKObjc.git", :tag => s.version.to_s }
   s.ios.deployment_target = '9.0'
+  s.source_files = 'SDK/*.{h,m}'
   s.requires_arc = true
-  s.static_framework = true
   s.preserve_paths = 'Frameworks/*.framework'
-  # Framework is linked on device only — simulator gets nothing
-  s.ios.vendored_frameworks = 'Frameworks/iXpandSDKlib.framework'
-  other_frameworks = %w[MobileCoreServices ExternalAccessory CoreFoundation
-                        Foundation SystemConfiguration CFNetwork Security]
-  other_ldflags_base = other_frameworks.map { |f| "-framework #{f}" }.join(' ') +
-                       ' -lz -lstdc++ -lc'
-  s.pod_target_xcconfig = {
-    'FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]'               => '"$(PODS_ROOT)/iXpandSDKObjc/Frameworks"',
-    'OTHER_LDFLAGS[sdk=iphoneos*]'                        => "$(inherited) #{other_ldflags_base} -framework iXpandSDKlib",
-    'OTHER_LDFLAGS[sdk=iphonesimulator*]'                 => "$(inherited) #{other_ldflags_base}",
-    'GCC_PREPROCESSOR_DEFINITIONS[sdk=iphonesimulator*]'  => '$(inherited) IXPAND_DISABLED_SIM=1',
-    'GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*]'         => '$(inherited)'
-  }
-  s.user_target_xcconfig = {
-    'FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]' => '"$(PODS_ROOT)/iXpandSDKObjc/Frameworks"',
-    'GCC_PREPROCESSOR_DEFINITIONS[sdk=iphonesimulator*]' => '$(inherited) IXPAND_DISABLED_SIM=1',
-    'GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*]'        => '$(inherited)'
+  ixpand_framework_os  = 'iXpandSDKlib'
+  ixpand_framework_sim = 'iXpandSDKlibSim'
+  other_frameworks_common = ['MobileCoreServices', 'ExternalAccessory', 'CoreFoundation', 'Foundation', 'SystemConfiguration', 'CFNetwork', 'Security']
+  other_ldflags_os  = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + ' -framework ' + ixpand_framework_os  + ' -lz -lstdc++ -lc'
+  other_ldflags_sim = '$(inherited) -framework ' + other_frameworks_common.join(' -framework ') + ' -framework ' + ixpand_framework_sim + ' -lz -lstdc++ -lc'
+  s.xcconfig = {
+    'FRAMEWORK_SEARCH_PATHS'                      => '"$(PODS_ROOT)/iXpandSDKObjc/Frameworks"',
+    'OTHER_LDFLAGS[sdk=iphonesimulator*]'         => other_ldflags_sim,
+    'OTHER_LDFLAGS[sdk=iphoneos*]'                => other_ldflags_os
   }
 end

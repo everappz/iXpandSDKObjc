@@ -16,6 +16,35 @@ NS_ASSUME_NONNULL_BEGIN
 @class IFDFlashDriveItemAttributes;
 @class EAAccessory;
 
+@interface IFDFlashDriveDeviceAttributes : NSObject
+
+@property (assign, nonatomic) NSInteger FATType;
+@property (copy, nonatomic) NSString *label;
+@property (assign, nonatomic) uint64_t totalAvailableSpace;
+@property (assign, nonatomic) uint64_t availableSpace;
+@property (assign, nonatomic) NSInteger deviceType;
+@property (assign, nonatomic) NSInteger batteryState;
+@property (copy, nonatomic) NSString *deviceFwVersion;
+
+@end
+
+@interface IFDFlashDriveItemAttributes : NSObject
+
+@property (copy, nonatomic, readonly) NSString *itemName;
+@property (assign, nonatomic, readonly) uint16_t flags;
+@property (strong, nonatomic, readonly) NSDate *creationDate;
+@property (strong, nonatomic, readonly) NSDate *modificationDate;
+@property (strong, nonatomic, readonly) NSDate *accessDate;
+@property (assign, nonatomic, readonly) NSUInteger itemSize;
+
+- (BOOL)isReadOnly;
+- (BOOL)isDirectory;
+- (BOOL)isArchive;
+- (BOOL)isSystemFile;
+- (BOOL)isHidden;
+
+@end
+
 extern NSString * const iXpandControllerFlashDriveConnectedNotification;
 extern NSString * const iXpandControllerFlashDriveDisconnectedNotification;
 
